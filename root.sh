@@ -2,7 +2,6 @@
 set -e 
 cd /opt
 
-#wget  https://root.cern.ch/download/root_v5.34.38.source.tar.gz
 tar xvf root_v5.34.38.source.tar.gz
 cd root	
 
@@ -14,9 +13,3 @@ linux32 ./configure linux --cxxflags="-m32 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_S
 --disable-builtin-lz4  --enable-builtin-freetype --disable-xrootd --enable-soversion --enable-minuit2 --enable-qt 
 
 linux32 make -j3
-#make install
-cd /opt
-#rm -rf root
-#rm root_v5.34.38.source.tar.gz
-#echo /opt/root-install/lib >> /etc/ld.so.conf
-#ldconfig

@@ -20,12 +20,12 @@ apptainer build sl6-root-i686.sif sl6-root-i686.def
 ```
 
 ## Running the Container
-
-When running the container, use `-e` (or a similar clean-environment option) to avoid leaking host environment variables or using any host software:
+When running the container, use `-e` (or a similar clean-environment option) to avoid leaking host environment variables or using any host software. Be sure to bind your data folder (using `-B` / `--bind`) if needed:
 
 ```bash
-apptainer shell -e sl6-root-i686.sif
+apptainer shell -e -B /path/to/data:/path/to/data sl6-root-i686.sif
 ```
+
 
 ## Compiling Downstream Binaries
 
