@@ -4,7 +4,7 @@ An Apptainer container based on `fermilab/fnal_wn_sl6` (`x86_64`) from Docker Hu
 
 ## Overview
 
-* **32-Bit ROOT**: The Beam DAQ binary is a 32-bit Boost archive, so ROOT in the container is compiled as 32-bit.
+* **32-Bit ROOT**: The Beam DAQ binary is a 32-bit Boost archive, so ROOT in the container is compiled as 32-bit. It is installed in `/opt/root`, and is included in the environment.
 * **Scientific Linux 6 (`x86_64`) Base**: This container uses `fermilab/fnal_wn_sl6` (`x86_64`) from Docker Hub as the base image because SL6 was the last version to ship `i686` RPMs alongside the 64-bit OS.
 * **Archived RPM Repositories**: Some RPM repositories (such as EPEL) have been patched to point to their respective archives.
 * **64-Bit Host Inode Support**: Due to running on a 64-bit host environment, ROOT and FreeType were recompiled manually so they can handle 64-bit inodes.
