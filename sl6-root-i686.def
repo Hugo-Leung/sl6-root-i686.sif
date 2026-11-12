@@ -1,0 +1,54 @@
+Bootstrap: docker
+From: fermilab/fnal-wn-sl6:latest
+
+%setup
+	TARBALL="root_v5.34.38.source.tar.gz"
+
+	URL="https://root.cern.ch/download/${TARBALL}"
+	if [ ! -f "${PWD}/${TARBALL}" ]; then
+        echo "ROOT source tarball not found in ${PWD}. Downloading..."
+        curl -fSL "${URL}" -o "${PWD}/${TARBALL}"
+  else
+        echo "Found existing ${TARBALL} in ${PWD}. Skipping download."
+  fi
+		
+%files 
+./root.sh /opt/root.sh
+root_v5.34.38.source.tar.gz /opt/root_v5.34.38.source.tar.gz
+
+%post
+    # 1. Disable SSL verification globally due to old TLS library handshakes
+    echo "sslverify=0" >> /etc/yum.conf
+
+    # 2. Enable 32-bit multi-arch package matching policy
+    echo "multilib_policy=all" >> /etc/yum.conf
+		sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/epel.repo
+		sed -i 's|^#baseurl=http://download.fedoraproject.org/pub/epel/6|baseurl=https://dl.fedoraproject.org/pub/archive/epel/6|g' /etc/yum.repos.d/epel.repo
+		cat << 'EOF' > /etc/yum.repos.d/epel-i386.repo
+[epel-i386]
+name=Extra Packages for Enterprise Linux 6 - i386 Archive
+baseurl=https://dl.fedoraproject.org/pub/archive/epel/6/i386
+enabled=1
+gpgcheck=0
+EOF
+
+#yum install -y root.i686 boost-devel.i686 glibc-devel.i686
+
+yum install -y git make cmake gcc-c++ gcc binutils \
+libX11-devel.i686 libXpm-devel.i686 libXft-devel.i686 libXext-devel.i686 python openssl-devel.i686 \
+ glibc-devel.i686 boost-devel.i686 libstdc++-devel.i686 \
+libxml2-devel.i686 lz4-devel.i686 zlib-devel.i686 glew-devel.i686 qt-devel.i686 \
+libjpeg-turbo-devel.i686 libpng-devel.i686 fftw-devel.i686
+
+
+yum clean all
+
+bash /opt/root.sh
+rm /opt/root.sh
+rm /opt/root_v5.34.38.source.tar.gz
+%environment
+    export ROOTSYS=/opt/root
+    export PATH=$ROOTSYS/bin:$PATH
+    export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
+    export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
+    export MANPATH=$ROOTSYS/man:$MANPATH

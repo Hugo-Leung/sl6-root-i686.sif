@@ -1,0 +1,27 @@
+# Apptainer / Singularity built images and sandboxes
+*.sif
+*.simg
+*.sqfs
+*.img
+*.sandbox/
+
+# Downloaded source tarballs and temporary build archives
+root_v*.source.tar.gz
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tgz
+root/
+
+
+# Vim swap and backup files
+*.swp
+*.swo
+*.swn
+*~
+
+# Build logs and temporary files
+*.log
+*.tmp
+.DS_Store
+
