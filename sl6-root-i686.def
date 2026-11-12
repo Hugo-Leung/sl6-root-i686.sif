@@ -32,18 +32,37 @@ enabled=1
 gpgcheck=0
 EOF
 
-	yum install -y git make cmake gcc-c++ gcc binutils \
-		libX11-devel.i686 libXpm-devel.i686 libXft-devel.i686 libXext-devel.i686 python openssl-devel.i686 \
-		glibc-devel.i686 boost-devel.i686 libstdc++-devel.i686 \
-		libxml2-devel.i686 lz4-devel.i686 zlib-devel.i686 glew-devel.i686 qt-devel.i686 \
-		libjpeg-turbo-devel.i686 libpng-devel.i686 fftw-devel.i686
-
+	yum install -y \
+		git \
+		make \
+		cmake \
+		gcc-c++ \
+		gcc \
+		binutils \
+		libX11-devel.i686 \
+		libXpm-devel.i686 \
+		libXft-devel.i686 \
+		libXext-devel.i686 \
+		python \
+		openssl-devel.i686 \
+		glibc-devel.i686 \
+		boost-devel.i686 \
+		libstdc++-devel.i686 \
+		libxml2-devel.i686 \
+		lz4-devel.i686 \
+		zlib-devel.i686 \
+		glew-devel.i686 \
+		qt-devel.i686 \
+		libjpeg-turbo-devel.i686 \
+		libpng-devel.i686 \
+		fftw-devel.i686
 
 	yum clean all
 
 	bash /opt/root.sh
 	rm /opt/root.sh
 	rm /opt/root_v5.34.38.source.tar.gz
+
 %environment
 	export ROOTSYS=/opt/root
 	export PATH=$ROOTSYS/bin:$PATH
