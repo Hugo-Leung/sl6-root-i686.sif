@@ -20,10 +20,7 @@ From: fermilab/fnal-wn-sl6:latest
 	root_{{ ROOT_VERSION }}.source.tar.gz /opt/root-source.tar.gz
 
 %post
-	# 1. Disable SSL verification globally due to old TLS library handshakes
-	echo "sslverify=0" >> /etc/yum.conf
-
-	# 2. Enable 32-bit multi-arch package matching policy
+	# Enable 32-bit multi-arch package matching policy
 	echo "multilib_policy=all" >> /etc/yum.conf
 	sed -i 's/^mirrorlist=/#mirrorlist=/g' /etc/yum.repos.d/epel.repo
 	sed -i 's|^#baseurl=http://download.fedoraproject.org/pub/epel/6|baseurl=https://dl.fedoraproject.org/pub/archive/epel/6|g' /etc/yum.repos.d/epel.repo
@@ -32,10 +29,11 @@ From: fermilab/fnal-wn-sl6:latest
 name=Extra Packages for Enterprise Linux 6 - i386 Archive
 baseurl=https://dl.fedoraproject.org/pub/archive/epel/6/i386
 enabled=1
-gpgcheck=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
 EOF
 
-	yum install -y \
+	yum --setopt=sslverify=false install -y \
 		git \
 		make \
 		cmake \
@@ -79,15 +77,15 @@ EOF
 %test 
 	root -b -q 
 	if [ $? -eq 0 ]; then
-        echo "root is running sucessfully."
+        echo "ROOT is running sucessfully."
     else
         echo "Build failed."
         exit 1
     fi
 	file $(which root) | grep -i "32-bit"
 	if [ $? -eq 0 ]; then
-        echo "root is combiled as 32-bit"
+        echo "ROOT is combiled as 32-bit"
     else
-        echo "root is not 32-bit?"
+        echo "ROOT is not 32-bit?"
         exit 1
     fi
