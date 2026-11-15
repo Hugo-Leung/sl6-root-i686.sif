@@ -29,9 +29,9 @@ apptainer shell -e -B /path/to/data:/path/to/data sl6-root-i686.sif
 
 ## Compiling Downstream Binaries
 
-When compiling other downstream binaries inside this environment, you will likely need to pass the following compiler flags to handle 64-bit host inodes:
+When compiling other downstream binaries while linking the included 32-bit ROOT inside this environment, you will likely need to pass the following compiler flags to handle 64-bit host inodes and make sure it is compiled as 32-bit:
 
 ```text
--D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -m32
 ```
 
