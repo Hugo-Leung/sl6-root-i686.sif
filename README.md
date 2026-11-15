@@ -9,6 +9,12 @@ An Apptainer container based on `fermilab/fnal_wn_sl6` (`x86_64`) from Docker Hu
 * **Archived RPM Repositories**: Some RPM repositories (such as EPEL) have been patched to point to their respective archives.
 * **64-Bit Host Inode Support**: Due to running on a 64-bit host environment, ROOT and FreeType were recompiled manually so they can handle 64-bit inodes.
 
+## Security Warning
+
+This container uses end-of-life Scientific Linux 6 and legacy software that no longer receives security updates. The build also sets `sslverify=0` for `yum`, disabling TLS certificate verification when fetching packages. This prevents `yum` from reliably authenticating repository servers and can allow a network attacker to substitute malicious packages, creating a supply-chain risk.
+
+Use this image only where its legacy environment is required. Do not rely on it for security-sensitive workloads or expose it to untrusted networks; prefer a supported OS and verified package sources whenever possible. A container does not eliminate the security risks of outdated software.
+
 ## Building with Apptainer
 
 ### ROOT Source Tarball

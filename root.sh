@@ -1,8 +1,8 @@
 #!/bin/bash
-set -e 
+set -ex 
 cd /opt
 
-tar xvf root_v5.34.38.source.tar.gz
+tar xvf root-source.tar.gz
 cd root	
 
 sed -i 's/FREE_CFLAGS="-m32";/FREE_CFLAGS="-m32 -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE";/g' graf2d/freetype/Module.mk

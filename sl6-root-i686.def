@@ -1,8 +1,11 @@
 Bootstrap: docker
 From: fermilab/fnal-wn-sl6:latest
 
+%arguments
+	ROOT_VERSION=v5.34.38
+
 %setup
-	TARBALL="root_v5.34.38.source.tar.gz"
+	TARBALL="root_{{ ROOT_VERSION }}.source.tar.gz"
 
 	URL="https://root.cern.ch/download/${TARBALL}"
 	if [ ! -f "${PWD}/${TARBALL}" ]; then
@@ -14,7 +17,7 @@ From: fermilab/fnal-wn-sl6:latest
 		
 %files 
 	./root.sh /opt/root.sh
-	root_v5.34.38.source.tar.gz /opt/root_v5.34.38.source.tar.gz
+	root_{{ ROOT_VERSION }}.source.tar.gz /opt/root-source.tar.gz
 
 %post
 	# 1. Disable SSL verification globally due to old TLS library handshakes
@@ -61,7 +64,7 @@ EOF
 
 	bash /opt/root.sh
 	rm /opt/root.sh
-	rm /opt/root_v5.34.38.source.tar.gz
+	rm /opt/root-source.tar.gz
 
 %environment
 	export ROOTSYS=/opt/root
@@ -69,3 +72,22 @@ EOF
 	export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 	export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
 	export MANPATH=$ROOTSYS/man:$MANPATH
+
+%runscript
+	root "$@"
+
+%test 
+	root -b -q 
+	if [ $? -eq 0 ]; then
+        echo "root is running sucessfully."
+    else
+        echo "Build failed."
+        exit 1
+    fi
+	file $(which root) | grep -i "32-bit"
+	if [ $? -eq 0 ]; then
+        echo "root is combiled as 32-bit"
+    else
+        echo "root is not 32-bit?"
+        exit 1
+    fi
