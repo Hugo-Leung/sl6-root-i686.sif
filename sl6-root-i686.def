@@ -64,6 +64,8 @@ EOF
 	rm /opt/root.sh
 	rm /opt/root-source.tar.gz
 
+	echo "ROOT_VERSION $(/opt/root/bin/root-config --version)" >> $APPTAINER_LABELS
+
 %environment
 	export ROOTSYS=/opt/root
 	export PATH=$ROOTSYS/bin:$PATH
