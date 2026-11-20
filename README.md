@@ -49,15 +49,26 @@ apptainer build sl6-root-i686.sif sl6-root-i686.def
 ```
 
 ## Running the Container
-When running the container, use `-e` (or a similar clean-environment option) to
-reduce inheritance of host environment variables. This does not isolate the
-container from the host kernel or make it a complete security boundary. Bind
-your data folder (using `-B` / `--bind`) if needed:
+Use `-e` (`--cleanenv`) to reduce interference from host environment variables.
+This is especially useful when an RHEL 9 or another modern host exports variables
+that might conflict with the Scientific Linux 6 environment.
+Use `--env DISPLAY="$DISPLAY"` to forward the display setting.
+Bind the data folder with `-B` / `--bind` if needed:
 
 ```bash
-apptainer shell -e -B /path/to/data:/path/to/data sl6-root-i686.sif
+apptainer shell -e --env DISPLAY="$DISPLAY" -B /path/to/data sl6-root-i686.sif
 ```
 
+For stronger separation from the host filesystem, use `-C` (`--containall`). It
+limits host mounts and inherited environment variables; however, it does not
+isolate the container from the host kernel or make the end-of-life software
+secure. Bind every directory required by the application explicitly,
+such as the data and Beam DAQ directories for the analysis,
+and the X11 socket and authority file needed for X11 forwarding:
+
+```bash
+apptainer shell -C --bind /tmp/.X11-unix --bind "${HOME}/.Xauthority" -B /path/to/data -B /path/to/BeamDAQ --env DISPLAY="$DISPLAY" sl6-root-i686.sif
+```
 
 ## Compiling Downstream Binaries
 
