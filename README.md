@@ -15,8 +15,10 @@ Hub for running 32-bit CERN ROOT and the Beam DAQ binary.
   with its legacy 32-bit dependencies.
 * **Archived RPM Repositories**: Some RPM repositories (such as EPEL) have been
   patched to point to their respective archives.
-* **64-Bit Host Inode Support**: ROOT is built with large-file support flags,
-  including for its bundled FreeType, to support 64-bit inodes.
+* **64-Bit File Offset Support**: ROOT is built with large-file support flags,
+  with patches applied to its built-in FreeType, libASImage, PCRE, LZMA, and
+  LZ4 components. See the [compilation flags table](#compiling-downstream-binaries)
+  for details.
 
 ## Security Warning
 
